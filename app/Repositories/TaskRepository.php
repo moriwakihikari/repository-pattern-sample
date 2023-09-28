@@ -44,8 +44,19 @@ class TaskRepository implements TaskRepositoryInterface
      * @param int $id
      * @return Task|null
      */
-    public function find($id): ?Task
+    public function find(int  $id): ?Task
     {
         return $this->task->findOrFail($id);
+    }
+
+    /**
+     * タスクを作成する
+     * 
+     * @param array $id
+     * @return Task
+     */
+    public function create(array $taskData): Task
+    {
+        return $this->task->create($taskData);
     }
 }
