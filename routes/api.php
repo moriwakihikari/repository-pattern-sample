@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('/task')->group(function () {
     Route::get('/index', [App\Http\Controllers\Api\TaskController::class, 'index']);
     Route::get('/show/{id}', [App\Http\Controllers\Api\TaskController::class, 'show']);
+    Route::post('/create', [App\Http\Controllers\Api\TaskController::class, 'create']);
 });

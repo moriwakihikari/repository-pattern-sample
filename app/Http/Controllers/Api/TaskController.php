@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\TaskRepositoryInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\UseCases\CreateTask;
+use App\UseCases\GetTasks;
+use App\UseCases\ShowTask;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -20,37 +23,35 @@ class TaskController extends Controller
     /**
      * タスク一覧
      * 
+     * @param GetTasks $usecase
      * @return JsonResponse
      */
-    public function index()
+    public function index(GetTasks $usecase)
     {
-        $tasks = $this->taskRepository->getAll();
-        return response()->json([
-            'tasks' => $tasks
-        ], 200);
+        return $usecase();
     }
 
     /**
      * タスク詳細
      * 
      * @param int $id 
+     * @param ShowTask $usecase
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id, ShowTask $usecase)
     {
-        try {
-            $task = $this->taskRepository->find($id);
-            return response()->json([
-                'task' => $task
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            $result = 'not found';
-            return response()->json(
-                [
-                    $result => 404
-                ],
-                404
-            );
-        }
+        return $usecase($id);
+    }
+
+    /**
+     * タスク作成
+     * 
+     * @param Request $request
+     * @param CreateTask $usecase
+     * @return JsonResponse
+     */
+    public function create(Request $request, CreateTask $usecase)
+    {
+        return $usecase($request);
     }
 }

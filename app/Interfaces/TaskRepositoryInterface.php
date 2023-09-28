@@ -11,5 +11,6 @@ interface TaskRepositoryInterface
 {
     public function getAll(): Collection;
     public function getAllInProgress(): Collection;
-    public function find($id): ?Task;
+    public function find(int $id): ?Task;
+    public function create(array $taskData): Task;
 }
